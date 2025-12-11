@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'backendAPI',
-    'djangorestframework',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'IETDB',
         'USER': 'postgres',
-        'PASSWORD': 'root',
+        'PASSWORD': 'Sniperz2025$$$',
         'HOST': 'localhost',
         'PORT': '5432',
     }
