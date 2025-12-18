@@ -43,3 +43,12 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.name
+
+class MenuItem(models.Model):
+    item_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    inventory_count = models.IntegerField()
+
+    def __str__(self):
+        return self.name
