@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000/menu-items/";
+const API_URL = "http://127.0.0.1:8000/api/menu-items"; // trailing slash!
 
 function Menu() {
   const [menuItems, setMenuItems] = useState([]);
@@ -11,33 +11,62 @@ function Menu() {
 
   useEffect(() => {
     const fetchMenu = async () => {
-      const response = await axios.get(API_URL);
-      setMenuItems(response.data);
+      try {
+        const response = await axios.get(API_URL);
+        setMenuItems(response.data);
+      } catch (error) {
+        console.error(
+          "Failed to fetch menu:",
+          error.response?.data || error.message
+        );
+      }
     };
 
     fetchMenu();
   }, []);
 
-  const addItem = async () => {
-    await axios.post(API_URL, {
-      name,
-      price,
-      inventory_count: inventory,
-    });
-    setName("");
-    setPrice("");
-    setInventory("");
-    refreshMenu();
+  const refreshMenu = async () => {
+    try {
+      const response = await axios.get(API_URL);
+      setMenuItems(response.data);
+    } catch (error) {
+      console.error(
+        "Failed to refresh menu:",
+        error.response?.data || error.message
+      );
+    }
   };
 
-  const refreshMenu = async () => {
-    const response = await axios.get(API_URL);
-    setMenuItems(response.data);
+  const addItem = async () => {
+    try {
+      await axios.post(API_URL, {
+        name,
+        price: parseFloat(price),
+        inventory_count: parseInt(inventory),
+      });
+      setName("");
+      setPrice("");
+      setInventory("");
+      refreshMenu();
+    } catch (error) {
+      console.error(
+        "Failed to add item:",
+        error.response?.data || error.message
+      );
+      alert("Failed to add item. Check console for details.");
+    }
   };
 
   const deleteItem = async (id) => {
-    await axios.delete(`${API_URL}${id}/`);
-    refreshMenu();
+    try {
+      await axios.delete(`${API_URL}/${id}/`);
+      refreshMenu();
+    } catch (error) {
+      console.error(
+        "Failed to delete item:",
+        error.response?.data || error.message
+      );
+    }
   };
 
   return (
